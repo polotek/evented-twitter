@@ -1,1 +1,1 @@
-exports = require('evented-twitter.js');
+exports = require('evented-twitter');

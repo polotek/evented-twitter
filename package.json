@@ -10,6 +10,6 @@
   { "mail" : ""
   , "web" : "http://github.com/polotek/evented-twitter/issues"
   }
-, "directories" : { "lib" : "./lib/" }
+, "directories" : { "lib" : "lib/" }
 , "engines" : { "node" : ">=0.1.90" }
 }
