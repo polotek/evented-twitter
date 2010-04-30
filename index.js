@@ -1,1 +1,0 @@
-exports = require('evented-twitter');

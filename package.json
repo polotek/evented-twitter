@@ -1,6 +1,6 @@
 { "name" : "evented-twitter"
 , "description" : "A twitter client for node.js"
-, "version" : "0.0.1"
+, "version" : "0.1.0"
 , "author" : "Marco Rogers"
 , "repository" :
   { "type" : "git"
@@ -10,6 +10,7 @@
   { "mail" : ""
   , "web" : "http://github.com/polotek/evented-twitter/issues"
   }
-, "directories" : { "lib" : "lib/" }
+, "directories" : { "lib" : "./lib/" }
+, "main": "./lib/evented-twitter"
 , "engines" : { "node" : ">=0.1.90" }
 }
