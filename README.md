@@ -1,5 +1,54 @@
 Evented Twitter is an asynchronous twitter client for node.js
 
+===Usage
+
+    var sys = require('sys');
+
+    var TwitterStream = require('evented-twitter').TwitterStream;
+    var t = new TwitterStream('polotek', '');
+
+    var params = {};
+
+    // statuses/sample from streaming api
+    var stream = t.sample('json', params);
+
+    // There are also functions for filter, links, retweet and firehose.
+    // Fill out the params object with query params to them
+    // i.e. params = {delimeter: 'length', track: 'Twitter'}
+
+    // see the api call that is being made
+    sys.debug('Calling ' + t.lastAPICall);
+
+    // "ready" is emitted when the stream is ready to go
+    // Similar to how clientRequest emits "response"
+    // Now you can attach events
+    stream.addListener('ready', function() {
+                           stream.addListener('tweet', function(tweet) {
+
+                                                  if(!String(tweet).trim()) return;
+
+                                                  try {
+                                                      var t = JSON.parse(tweet);
+                                                      sys.puts(sys.inspect(t));
+                                                  } catch(e) {
+                                                      sys.debug('\nProblem parsing: ' + tweet);
+                                                      sys.debug(e.message);
+                                                      sys.debug(e.stack);
+                                                  }
+
+                                              });
+
+                           stream.addListener('complete', function(response) {
+                                                  stream.close();
+                                              });
+                       });
+
+    stream.addListener('error', function(err) {
+                           sys.debug(err.message);
+                           throw err;
+                       });
+
+    stream.start();
 
 --
 The MIT License
