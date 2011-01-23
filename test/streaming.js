@@ -34,6 +34,7 @@
 
 var fs = require('fs'),
     assert = require('assert'),
+    _ = require('../lib/underscore')._,
     et = require('../lib/evented-twitter');
 
 var creds = JSON.parse(fs.readFileSync(__dirname + '/credentials.json'))
@@ -73,7 +74,8 @@ s.on('ready', function() {
 
 
 var timer = setTimeout(function() {
-    fs.writeFileSync('databuffer.json', s._dataBuffer.join('\n-\n-\n-part-\n-\n-\n'));
+    assert.ok(_.isArray(s._dataBuffer));
+    fs.writeFileSync(__dirname + '/data/databuffer.json', s._dataBuffer.join('\n-\n-\n-part-\n-\n-\n'));
     assert.ok(data);
     assert.ok(tweet);
     s.close();
