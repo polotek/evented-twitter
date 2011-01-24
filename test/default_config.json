@@ -1,0 +1,9 @@
+
+{ "oauth":
+      { "consumerKey": "FJeY2yCBS4diL3Mj1g8fw"
+      , "consumerSecret" : "uFhuO1c5Ivh9ereLVbSmViNg7tsDoZCFYi4pHZ77Y"
+      , "requestTokenURL" : "http:\/\/api.twitter.com\/oauth\/request_token"
+      , "accessTokenURL" : "http:\/\/api.twitter.com\/oauth\/access_token"
+      , "authorizeURL" : "https:\/\/api.twitter.com\/oauth\/authorize"
+    }
+}
