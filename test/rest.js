@@ -32,41 +32,27 @@
  *
  */
 
-var util = require('util')
-        , fs = require('fs')
-        , assert = require('assert')
-        , _ = require('../lib/underscore')._
-        , et = require('../lib/evented-twitter');
-
-var creds = JSON.parse(fs.readFileSync(__dirname + '/credentials.json'))
-    , oauth = creds.oauth;
-
-assert.ok(creds);
-delete creds.oauth;
-
-assert.ok(oauth);
-
-oauth.auth = 'oauth';
-
-function ets(err, noStack) {
+function errToString(err, noStack) {
     if(!err) return '';
-    else if(err.statusCode && err.data) {
+
+    if(err.statusCode && err.data /* && err.data.match(/^\s*(\{|\[)/) */) {
         var data = JSON.parse(err.data);
         err = new Error(data.error + '(' + err.statusCode + '): ' + data.request);
         noStack = true;
     }
+
     return (err.name ? err.name + ': ' : '') +
            (err.message ? err.message + '\n' : '') +
            ( (!noStack && err.stack) ? err.stack : '');
 }
 
 function handler(name) {
-    return function(err, data) {
+    return function(err, data, res) {
         try {
             if(err) throw err;
             assert.ok(data && (_.isArray(data) ? !!data.length : true));
         } catch(e) {
-            console.error('<Twitter.' + name + '>\n', ets(e), '\n\n\n');
+            console.error('<Twitter.' + name + '>\n', errToString(e), '\n\n\n');
         }
     }
 }
@@ -79,7 +65,7 @@ function batch(tests, opts) {
         try {
             tests[i]();
         } catch(e) {
-            console.error(ets(e), '\n\n\n');
+            console.error(errToString(e), '\n\n\n');
         }
     }
 
@@ -91,9 +77,26 @@ function batch(tests, opts) {
     }
 }
 
-var data;
-var tweet;
-var p = null;
+var util = require('util')
+    , fs = require('fs')
+    , assert = require('assert')
+    , _ = require('../lib/underscore')._
+    , et = require('../lib/evented-twitter');
+
+var creds = JSON.parse(fs.readFileSync(__dirname + '/credentials.json'))
+    , oauth = creds.oauth;
+
+assert.ok(creds);
+assert.ok(oauth);
+
+delete creds.oauth;
+
+oauth.auth = 'oauth';
+
+var data
+    , tweet
+    , p;
+
 var t = new et.Twitter(creds);
 
 function testTimeline() {
@@ -131,7 +134,7 @@ function testUser() {
     //t.profileImage('json', oauth, handler('profileImage'));
 
     t.friends('json', oauth, handler('friends'));
-    
+
     t.followers('json', oauth, handler('followers'));
 }
 
@@ -142,7 +145,7 @@ function testTweet() {
     //t.update('json', oauth, handler('update'));
 
     //t.destroy('json', oauth, handler('destroy'));
-    
+
     //t.retweet('json', oauth, handler('retweet'));
 
     p = _.extend({}, oauth, { id: '30333475600998400' });
@@ -160,7 +163,7 @@ function testDM() {
     t.directMessagesSent('json', oauth, handler('directMessagesSent'));
 
     //t.directMessagesNew('json', oauth, handler('directMessagesNew'));
-    
+
     //t.directMessagesDestroy('json', oauth, handler('directMessagesDestroy'));
 }
 
