@@ -87,11 +87,9 @@ var creds = JSON.parse(fs.readFileSync(__dirname + '/credentials.json'))
     , oauth = creds.oauth;
 
 assert.ok(creds);
-assert.ok(oauth);
+assert.ok(creds.oauth);
 
-delete creds.oauth;
-
-oauth.auth = 'oauth';
+creds.oauth.auth = 'oauth';
 
 var data
     , tweet
@@ -100,67 +98,62 @@ var data
 var t = new et.Twitter(creds);
 
 function testTimeline() {
-    t.publicTimeline('json', oauth, handler('publicTimeline'));
+    t.publicTimeline('json', null, handler('publicTimeline'));
 
-    t.homeTimeline('json', oauth, handler('homeTimeline'));
+    t.homeTimeline('json', null, handler('homeTimeline'));
 
-    t.friendsTimeline('json', oauth, handler('friendsTimeline'));
+    t.friendsTimeline('json', null, handler('friendsTimeline'));
 
-    t.userTimeline('json', oauth, handler('friendsTimeline'));
+    t.userTimeline('json', null, handler('friendsTimeline'));
 
-    t.mentions('json', oauth, handler('friendsTimeline'));
+    t.mentions('json', null, handler('friendsTimeline'));
 
-    t.retweetedByMe('json', oauth, handler('retweetedByMe'));
+    t.retweetedByMe('json', null, handler('retweetedByMe'));
 
-    t.retweetedToMe('json', oauth, handler('retweetedToMe'));
+    t.retweetedToMe('json', null, handler('retweetedToMe'));
 
-    t.retweetsOfMe('json', oauth, handler('retweetsOfMe'));
+    t.retweetsOfMe('json', null, handler('retweetsOfMe'));
 }
 
 function testUser() {
-    p = _.extend({}, oauth, { screen_name: 'polotek' });
-    t.showUser('json', p, handler('showUser'));
+    t.showUser('json', { screen_name: 'polotek' }, handler('showUser'));
 
-    t.lookup('json', p, handler('lookup'));
+    t.lookup('json', { screen_name: 'polotek' }, handler('lookup'));
 
-    p = _.extend({}, oauth, { q: 'polotek' });
-    t.search('json', p, handler('search'));
+    t.search('json',  { q: 'polotek' }, handler('search'));
 
-    t.suggestions('json', oauth, handler('suggestions'));
+    t.suggestions('json', null, handler('suggestions'));
 
-    p = _.extend({}, oauth, { category: 'twitter' });
-    t.suggestionsCategory('json', p, handler('suggestionsCategory'));
+    t.suggestionsCategory('json', { category: 'twitter' }, handler('suggestionsCategory'));
 
-    //t.profileImage('json', oauth, handler('profileImage'));
+    //t.profileImage('json', null, handler('profileImage'));
 
-    t.friends('json', oauth, handler('friends'));
+    t.friends('json', null, handler('friends'));
 
-    t.followers('json', oauth, handler('followers'));
+    t.followers('json', null, handler('followers'));
 }
 
 function testTweet() {
-    p = _.extend({}, oauth, { id: '30489217779896320' });
-    t.showStatus('json', p, handler('showStatus'));
+    t.showStatus('json', { id: '30489217779896320' }, handler('showStatus'));
 
-    //t.update('json', oauth, handler('update'));
+    //t.update('json', null, handler('update'));
 
-    //t.destroy('json', oauth, handler('destroy'));
+    //t.destroy('json', null, handler('destroy'));
 
-    //t.retweet('json', oauth, handler('retweet'));
+    //t.retweet('json', null, handler('retweet'));
 
-    p = _.extend({}, oauth, { id: '30333475600998400' });
-    t.retweets('json', p, handler('retweets'));
+    t.retweets('json', { id: '30333475600998400' }, handler('retweets'));
 
-    t.retweetedBy('json', p, handler('retweetedBy'));
+    t.retweetedBy('json', { id: '30333475600998400' }, handler('retweetedBy'));
 
-    t.retweetedByIds('json', p, handler('retweetedByIds'));
+    t.retweetedByIds('json', { id: '30333475600998400' }, handler('retweetedByIds'));
 }
 
 
 function testDM() {
-    t.directMessages('json', oauth, handler('directMessages'));
+    t.directMessages('json', null, handler('directMessages'));
 
-    t.directMessagesSent('json', oauth, handler('directMessagesSent'));
+    t.directMessagesSent('json', null, handler('directMessagesSent'));
 
     //t.directMessagesNew('json', oauth, handler('directMessagesNew'));
 
