@@ -93,6 +93,7 @@ function batch(tests, opts) {
 
 var data;
 var tweet;
+var p = null;
 var t = new et.Twitter(creds);
 
 function testTimeline() {
@@ -114,15 +115,18 @@ function testTimeline() {
 }
 
 function testUser() {
-    t.show('json', oauth, handler('show'));
+    p = _.extend({}, oauth, { screen_name: 'polotek' });
+    t.showUser('json', p, handler('showUser'));
 
-    t.lookup('json', oauth, handler('lookup'));
+    t.lookup('json', p, handler('lookup'));
 
-    t.search('json', oauth, handler('search'));
+    p = _.extend({}, oauth, { q: 'polotek' });
+    t.search('json', p, handler('search'));
 
     t.suggestions('json', oauth, handler('suggestions'));
 
-    t.suggestionsCategory('json', oauth, handler('suggestionsCategory'));
+    p = _.extend({}, oauth, { category: 'twitter' });
+    t.suggestionsCategory('json', p, handler('suggestionsCategory'));
 
     //t.profileImage('json', oauth, handler('profileImage'));
 
@@ -132,7 +136,8 @@ function testUser() {
 }
 
 function testTweet() {
-    t.show('json', oauth, handler('show'));
+    p = _.extend({}, oauth, { id: '30489217779896320' });
+    t.showStatus('json', p, handler('showStatus'));
 
     //t.update('json', oauth, handler('update'));
 
@@ -140,11 +145,12 @@ function testTweet() {
     
     //t.retweet('json', oauth, handler('retweet'));
 
-    t.retweets('json', oauth, handler('retweets'));
-    
-    t.retweetedBy('json', oauth, handler('retweetedBy'));
+    p = _.extend({}, oauth, { id: '30333475600998400' });
+    t.retweets('json', p, handler('retweets'));
 
-    t.retweetedByIds('json', oauth, handler('retweetedByIds'));
+    t.retweetedBy('json', p, handler('retweetedBy'));
+
+    t.retweetedByIds('json', p, handler('retweetedByIds'));
 }
 
 
