@@ -41,17 +41,27 @@ var creds = JSON.parse(fs.readFileSync(__dirname + '/credentials.json'))
     , oauth = creds.oauth;
 
 assert.ok(creds);
-delete creds.oauth;
-
 assert.ok(oauth);
+
+delete creds.oauth;
 
 oauth.auth = 'oauth';
 
-var data;
-var tweet;
+var data
+    , tweet;
+
 var t = new et.TwitterStream(creds);
 //var t = new et.TwitterStream({oauth: oauth});
+
 var s = t.sample('json');
+
+var timer = setTimeout(function() {
+    assert.ok(_.isArray(s._dataBuffer));
+    fs.writeFileSync(__dirname + '/data/databuffer.json', s._dataBuffer.join('\n-\n-\n-part-\n-\n-\n'));
+    assert.ok(data);
+    assert.ok(tweet);
+    s.close();
+}, 2000);
 
 s.on('ready', function() {
     s.on('data', function(chunk_data) {
@@ -71,15 +81,6 @@ s.on('ready', function() {
         throw new Error('"complete" event. Stream should not stop');
     });
 });
-
-
-var timer = setTimeout(function() {
-    assert.ok(_.isArray(s._dataBuffer));
-    fs.writeFileSync(__dirname + '/data/databuffer.json', s._dataBuffer.join('\n-\n-\n-part-\n-\n-\n'));
-    assert.ok(data);
-    assert.ok(tweet);
-    s.close();
-}, 2000);
 
 s.on('error', function(err) {
     clearTimeout(timer);
