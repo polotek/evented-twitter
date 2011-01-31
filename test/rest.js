@@ -35,9 +35,13 @@
 function errToString(err, noStack) {
     if(!err) return '';
 
-    if(err.statusCode && err.data /* && err.data.match(/^\s*(\{|\[)/) */) {
-        var data = JSON.parse(err.data);
-        err = new Error(data.error + '(' + err.statusCode + '): ' + data.request);
+    if(err.statusCode && err.data) {
+        if(err.data.match(/^\s*(\{|\[)/)) {
+            var data = JSON.parse(err.data);
+            err = new Error(data.error + ' (' + err.statusCode + '): ' + data.request);
+        } else {
+            err = new Error( '(' + err.statusCode + '): ' + err.data );
+        }
         noStack = true;
     }
 
@@ -134,13 +138,20 @@ function testUser() {
 }
 
 function testTweet() {
+    var rand = Math.floor(Math.random() * 1000);
+
     t.showStatus('json', { id: '30489217779896320' }, handler('showStatus'));
 
-    //t.update('json', null, handler('update'));
+    t.update('json', { status: 'testing evented-twiter ' + rand}, function(err, data, res) {
+        if(err) handler('update')(err, data, res);
+        
+        var data = JSON.parse(data);
+        setTimeout(function() {
+            t.destroy('json', {id: data.id_str}, handler('destroy'));
+        }, 100);
+    });
 
-    //t.destroy('json', null, handler('destroy'));
-
-    //t.retweet('json', null, handler('retweet'));
+    t.retweet('json', {id: '30333475600998400'}, handler('retweet'));
 
     t.retweets('json', { id: '30333475600998400' }, handler('retweets'));
 
