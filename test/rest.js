@@ -130,7 +130,12 @@ function testUser() {
 
     t.suggestionsCategory('json', { category: 'twitter' }, handler('suggestionsCategory'));
 
-    //t.profileImage('json', null, handler('profileImage'));
+    t.profileImage('json', {screen_name:'phonyacct'}, function(err, data, res) {
+        if(err) {
+            if(!err.statusCode || err.statusCode !== 302)
+                return handler('profileImage')(err, data, res);
+        }
+    });
 
     t.friends('json', null, handler('friends'));
 
