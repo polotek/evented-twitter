@@ -149,7 +149,7 @@ function testTweet() {
 
     t.update('json', { status: 'testing evented-twiter ' + rand}, function(err, data, res) {
         if(err) handler('update')(err, data, res);
-        
+
         var data = JSON.parse(data);
         setTimeout(function() {
             t.retweet('json', {id: data.id_str}, handler('retweet'));
@@ -168,6 +168,9 @@ function testTweet() {
     t.retweetedByIds('json', { id: '30333475600998400' }, handler('retweetedByIds'));
 }
 
+function testAccount() {
+    t.rateLimitStatus('json', null, handler('rateLimitStatus'));
+}
 
 function testDM() {
     t.directMessages('json', null, handler('directMessages'));
@@ -185,4 +188,4 @@ function testDM() {
     });
 }
 
-batch([ testTimeline, testUser, testTweet, testDM ], { batchSize: 1 });
+batch([ testTimeline, testUser, testTweet, testAccount, testDM ], { batchSize: 1 });
