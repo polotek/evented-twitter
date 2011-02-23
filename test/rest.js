@@ -174,9 +174,15 @@ function testDM() {
 
     t.directMessagesSent('json', null, handler('directMessagesSent'));
 
-    //t.directMessagesNew('json', oauth, handler('directMessagesNew'));
+    t.directMessagesNew('json', {screen_name:'polotek', text:'hello!'}, function(err, data, res) {
 
-    //t.directMessagesDestroy('json', oauth, handler('directMessagesDestroy'));
+        if(err) handler('directMessagesNew')(err, data, res);
+
+        var data = JSON.parse(data);
+        setTimeout(function() {
+            t.directMessagesDestroy('json', {id: data.id_str}, handler('directMessagesDestroy'));
+        }, 1000);
+    });
 }
 
 batch([ testTimeline, testUser, testTweet, testDM ], { batchSize: 1 });
