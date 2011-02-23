@@ -188,4 +188,13 @@ function testDM() {
     });
 }
 
-batch([ testTimeline, testUser, testTweet, testAccount, testDM ], { batchSize: 1 });
+function testMisc() {
+    t.showUser('json', null, function(err, data, res) {
+        assert.ok(err);
+        var url = 'http://api.twitter.com/1/users/show.json';
+        assert.equal(url, err.et.url, 'Errors should contain the url that was requested');
+        //handler('showUser')(err, data, res);
+    });
+}
+
+batch([ testTimeline, testUser, testTweet, testAccount, testDM, testMisc ], { batchSize: 1 });
