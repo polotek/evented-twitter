@@ -152,11 +152,14 @@ function testTweet() {
         
         var data = JSON.parse(data);
         setTimeout(function() {
+            t.retweet('json', {id: data.id_str}, handler('retweet'));
+        });
+
+        setTimeout(function() {
             t.destroy('json', {id: data.id_str}, handler('destroy'));
         }, 100);
     });
 
-    t.retweet('json', {id: '30333475600998400'}, handler('retweet'));
 
     t.retweets('json', { id: '30333475600998400' }, handler('retweets'));
 
