@@ -5,7 +5,7 @@ supports the REST api and the Streaming API (no search yet).
 
 #### REST
 
-    var sys = require('sys');
+    var util = require('util');
 
     var Twitter = require('evented-twitter').Twitter;
     var t = new Twitter('username', 'password');
@@ -15,18 +15,18 @@ supports the REST api and the Streaming API (no search yet).
              json = JSON.parse(result);
          } catch(e) {}
 
-         sys.puts(sys.inspect(json));
+         util.puts(util.inspect(json));
     });
 
-    sys.puts('Calling ' + t.lastAPICall);
+    util.puts('Calling ' + t.lastAPICall);
 
 You can inspect the Twitter function to see what methods are available
 
-    sys.puts(sys.inspect(Twitter));
+    util.puts(util.inspect(Twitter));
 
 #### Streaming
 
-    var sys = require('sys');
+    var util = require('util');
 
     var TwitterStream = require('evented-twitter').TwitterStream;
     var t = new TwitterStream('username', 'password');
@@ -41,7 +41,7 @@ You can inspect the Twitter function to see what methods are available
     // i.e. params = {delimeter: 'length', track: 'Twitter'}
 
     // see the api call that is being made
-    sys.debug('Calling ' + t.lastAPICall);
+    util.debug('Calling ' + t.lastAPICall);
 
     // "ready" is emitted when the stream is ready to go
     // Similar to how clientRequest emits "response"
@@ -52,11 +52,11 @@ You can inspect the Twitter function to see what methods are available
             try {
                 // The result is not parsed for you
                 var t = JSON.parse(tweet);
-                sys.puts(sys.inspect(t));
+                util.puts(util.inspect(t));
             } catch(e) {
-                sys.debug('\nProblem parsing: ' + tweet);
-                sys.debug(e.message);
-                sys.debug(e.stack);
+                util.debug('\nProblem parsing: ' + tweet);
+                util.debug(e.message);
+                util.debug(e.stack);
             }
         });
 
@@ -66,7 +66,7 @@ You can inspect the Twitter function to see what methods are available
     });
 
     stream.addListener('error', function(err) {
-        sys.debug(err.message);
+        util.debug(err.message);
         throw err;
     });
 
