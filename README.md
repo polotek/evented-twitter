@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/polotek/evented-twitter.png)](http://travis-ci.org/polotek/evented-twitter)
 Evented Twitter is an asynchronous twitter client for node.js.  I
 supports the REST api and the Streaming API (no search yet).
 
